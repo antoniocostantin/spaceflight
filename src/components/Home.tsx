@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { News } from "../interface/interface";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [news, setNews] = useState<News[]>([]);
@@ -26,24 +27,31 @@ function Home() {
       });
   };
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     fetchNews();
   }, []);
 
   return (
     <Container>
-      <Row xs={{cols:1}} md={{cols:3}} xl={{cols:4}}>
+        <Row className="justify-content-center">
+            <Col xs={12} md={6} ><h1 className="text-center">Spacefligth</h1></Col>
+        </Row>
+      <Row xs={{cols:1}} md={{cols:3}} xl={{cols:4}} className="g-3" >  
         {news.map((n) =>{
             return(
-                <Col>
-                <Card>
+                <Col key={n.id}>
+                <Card className="h-100" >
                 <Card.Img variant="top" src={n.image_url} />
                 <Card.Body>
                   <Card.Title>{n.title}</Card.Title>
                   <Card.Text>
                     {n.summary}
                   </Card.Text>
-                  <Button variant="outline-dark">Go somewhere</Button>
+                  <Button onClick={()=>{
+                    navigate(`/${n.id}`)
+                  }} variant="outline-dark">Go to article</Button>
                 </Card.Body>
               </Card></Col>
             )
